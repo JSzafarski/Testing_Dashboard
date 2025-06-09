@@ -1,5 +1,4 @@
 import os
-
 import pandas as pd
 import sqlite3
 
@@ -10,7 +9,8 @@ def save_results_to_csv():
     :return:
     """
     # Connect to database
-    connection = sqlite3.connect("example_results.db")
+    connection = sqlite3.connect("example_results.db")#need to ensure the db is created in the right place
+    # in order to read it properly
     df = pd.read_sql_query('SELECT * FROM results', connection)
     connection.close() #close the database after we finish the read operation
 
