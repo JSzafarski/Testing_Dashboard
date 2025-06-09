@@ -35,7 +35,8 @@ def initialise_db():
         print(f"Unexpected error: {e}")
 
 
-@app.get("/run-testing")
+
+@app.get("/run-testing")#defined a route to get the api response
 async def run_testing():
     #  link to pytest later
     result = {"endpoint": "test/api", "status": "passed", "response_time": 0.1}
