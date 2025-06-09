@@ -11,25 +11,34 @@ def initialise_db():
     This function prepared the database structure
     :return: none
     """
-    connection = sqlite3.connect("src\\data\\example_results.db")
-    cursor = connection.cursor()
-    cursor.execute("""
-        CREATE TABLE IF NOT EXISTS results (
-            id INTEGER PRIMARY KEY AUTOINCREMENT,
-            endpoint TEXT,
-            status TEXT,
-            response_time FLOAT,
-            timestamp TEXT
-        )
-    """)
-    connection.commit()
-    connection.close()
+    try:
+        db_path = os.path.join("src", "data", "example_results.db")
+        os.makedirs(os.path.dirname(db_path), exist_ok=True)
+        connection = sqlite3.connect(db_path)
+        cursor = connection.cursor()
+        cursor.execute("""
+            CREATE TABLE IF NOT EXISTS results (
+                id INTEGER PRIMARY KEY AUTOINCREMENT,
+                endpoint TEXT,
+                status TEXT,
+                response_time FLOAT,
+                timestamp TEXT
+            )
+        """)
+        connection.commit()
+        connection.close()
+    except sqlite3.Error as e:
+        print(f"SQLite error: {e}")
+        #error involving db creation
+    except Exception as e:
+        #error involving path
+        print(f"Unexpected error: {e}")
 
 
 @app.get("/run-testing")
 async def run_testing():
     #  link to pytest later
-    result = {"endpoint": "test/api", "status": "pass", "response_time": 0.5}
+    result = {"endpoint": "test/api", "status": "passed", "response_time": 0.1}
     conn = sqlite3.connect("src/data/example_results.db")
     cursor = conn.cursor()
     cursor.execute(
